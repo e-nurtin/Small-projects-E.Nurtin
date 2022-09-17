@@ -1,2 +1,4 @@
-# learning-journey-projects
-Here I upload my projects as I learn new things
+Projects I work on during my learning journey
+
+Feel free to use or fork any of my work
+
