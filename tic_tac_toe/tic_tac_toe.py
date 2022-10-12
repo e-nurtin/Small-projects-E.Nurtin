@@ -1,12 +1,12 @@
 import random
 
 
-def print_board(board):
-    print(" | ", game_board[0], " | ", game_board[1], " | ", game_board[2], " | ")
-    print(" ------------------- ")
-    print(" | ", game_board[3], " | ", game_board[4], " | ", game_board[5], " | ")
-    print(" ------------------- ")
-    print(" | ", game_board[6], " | ", game_board[7], " | ", game_board[8], " | ")
+def print_board():
+    print(f" | {game_board[0]}  |  {game_board[1]}  |  {game_board[2]} | ")
+    print(" ----------------- ")
+    print(f" | {game_board[3]}  |  {game_board[4]}  |  {game_board[5]} | ")
+    print(" ----------------- ")
+    print(f" | {game_board[6]}  |  {game_board[7]}  |  {game_board[8]} | ")
 
 
 def get_marks():
@@ -37,12 +37,12 @@ def get_input(player, computer):
         computers_choice = random.choice(available_choices)
         game_board[computers_choice] = computer
         available_choices.remove(computers_choice)
-        print_board(game_board)
+        print_board()
 
 
-def check_for_winner(players_mark, computers_mark, win):
+def check_for_winner(players_mark, computers_mark, win, player_score,computer_score):
     if "-" not in game_board:
-        win = "tie"
+        win = "Tie"
     for combination in winning_combinations:
         player_count = 0
         computer_count = 0
@@ -50,13 +50,24 @@ def check_for_winner(players_mark, computers_mark, win):
             if game_board[index] == players_mark:
                 player_count += 1
                 if player_count == 3:
-                    win = 'player'
+                    win = 'Player'
+                    player_score += 1
+                    break
             elif game_board[index] == computers_mark:
                 computer_count += 1
                 if computer_count == 3:
-                    win = 'computer'
+                    win = 'Computer'
+                    computer_score += 1
+                    break
+        if win == "Computer" or win == "Player":
+            break
+    return win, player_score, computer_score
 
-    return win
+
+def print_winner(winner):
+    if winner != "no":
+        print_board()
+        print(f"\nCurrent winner: {winner}!")
 
 
 winning_combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
@@ -71,20 +82,12 @@ while command != "`":
     game_board = ['-', '-', '-',
                   '-', '-', '-',
                   '-', '-', '-']
-    print_board(game_board)
+    print_board()
     while winner == "no":
         get_input(players, computers)
-        winner = check_for_winner(players, computers, winner)
-        if winner == "player":
-            print("\nPlayer wins!")
-            player_score += 1
-            print_board(game_board)
-        elif winner == "computer":
-            print("\nComputer wins!")
-            computer_score += 1
-            print_board(game_board)
-        elif winner == "tie":
-            print("\nTie!")
-            print_board(game_board)
-    print(f"Scores:\nComputer:{computer_score}\nPlayer:{player_score}")
+        winner, player_score, computer_score = \
+            check_for_winner(players, computers, winner, player_score,
+                             computer_score)
+        print_winner(winner)
+    print(f"Computer:{computer_score}\nPlayer:{player_score}")
     command = input("\nPress enter to start playing again or '`' to exit!\n")
