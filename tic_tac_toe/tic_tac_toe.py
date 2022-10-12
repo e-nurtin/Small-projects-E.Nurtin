@@ -41,13 +41,12 @@ def get_input(player, computer):
 
 
 def check_for_winner(players_mark, computers_mark, win):
+    if "-" not in game_board:
+        win = "tie"
     for combination in winning_combinations:
         player_count = 0
         computer_count = 0
         for index in combination:
-            if "-" not in game_board:
-                win = "tie"
-                break
             if game_board[index] == players_mark:
                 player_count += 1
                 if player_count == 3:
@@ -56,6 +55,7 @@ def check_for_winner(players_mark, computers_mark, win):
                 computer_count += 1
                 if computer_count == 3:
                     win = 'computer'
+
     return win
 
 
@@ -63,6 +63,8 @@ winning_combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
                         [1, 4, 7], [2, 5, 8], [0, 4, 8], [6, 4, 2]]
 command = input("Press enter to start playing!\n")
 players, computers = get_marks()
+computer_score = 0
+player_score = 0
 while command != "`":
     winner = "no"
     available_choices = [0, 1, 2, 3, 4, 5, 6, 7, 8]
@@ -75,11 +77,14 @@ while command != "`":
         winner = check_for_winner(players, computers, winner)
         if winner == "player":
             print("\nPlayer wins!")
+            player_score += 1
             print_board(game_board)
         elif winner == "computer":
             print("\nComputer wins!")
+            computer_score += 1
             print_board(game_board)
         elif winner == "tie":
             print("\nTie!")
             print_board(game_board)
+    print(f"Scores:\nComputer:{computer_score}\nPlayer:{player_score}")
     command = input("\nPress enter to start playing again or '`' to exit!\n")
