@@ -1,4 +1,4 @@
-#Small projects I made learning Python!
+# Small projects I made learning Python!
 
 All projects are terminal based.
 
