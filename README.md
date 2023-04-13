@@ -20,8 +20,8 @@ What kind of developer would I be if I didn't make this classic ?
 -----------------------------------------------
 
 ## 4. Tic, Tac, Toe
-I plan on doing this on GUI, once I get the chance!
+
 
 -----------------------------------------------
-Feel free to use and\or improve any of my work!
+
 
