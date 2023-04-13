@@ -1,66 +1,63 @@
 import random
 
 
-def level_of_game(lvl):
-    computers_number = 0
-    if lvl == 1:
-        computers_number = random.randint(1, 100)
-    elif lvl == 2:
-        computers_number = random.randint(1, 200)
-    elif lvl == 3:
-        computers_number = random.randint(1, 300)
-    elif lvl == 4:
-        computers_number = random.randint(1, 500)
-    elif lvl == 5:
-        computers_number = random.randint(1, 999)
-    return computers_number
+def level_of_game(number_range_to_guess_from):
+	return random.randint(1, number_range_to_guess_from)
 
 
-def player_msg(number):
-    player_input = ""
-    if number == 1:
-        player_input = input("Try to guess the number between 1-100: ")
-    elif number == 2:
-        player_input = input("Try to guess the number between 1-200: ")
-    elif number == 3:
-        player_input = input("Try to guess the number between 1-300: ")
-    elif number == 4:
-        player_input = input("Try to guess the number between 1-500: ")
-    elif number == 5:
-        player_input = input("Try to guess the number between 1-999: ")
-    return player_input
+def get_player_input(number_range_to_guess_from):
+	
+	while True:
+		player_input = input(f"Try to guess the number between 1-{number_range_to_guess_from}: ")
+		
+		if not player_input.isdigit() or not (1 <= int(player_input) <= number_range_to_guess_from):
+			print("Please enter a valid input!")
+			continue
+		break
+		
+	return int(player_input)
 
 
 dead = False
-level = 1
-for game in range(5):
-    mistakes_allowed = 15
-    tried_numbers = []
-    computers_choice = level_of_game(level)
-    while level <= 5:
-        player_choice = player_msg(level)
-        if player_choice in tried_numbers:
-            print("You already tried that number!")
-            continue
-        else:
-            tried_numbers.append(player_choice)
-            if int(player_choice) > computers_choice:
-                print("Too high!")
-                mistakes_allowed -= 1
-            elif int(player_choice) < computers_choice:
-                print("Too low!")
-                mistakes_allowed -= 1
-            elif int(player_choice) == computers_choice:
-                print(f"Congratulations! You guessed the number "
-                      f"{computers_choice} correctly!")
-                level += 1
-                print()
-                print(f"Next level: {level} ")
-                break
-            if mistakes_allowed == 0:
-                dead = True
-                break
-            print(f"You have {mistakes_allowed} lives left!")
-    if dead:
-        print("You died!")
-        break
+
+for level in range(1, 6):
+	lives_left = 15
+	range_to_guess_from = int(100 * (level + 0.5))
+	guessed_numbers = []
+	number_to_guess = level_of_game(range_to_guess_from)
+	while True:
+		player_choice = get_player_input(range_to_guess_from)
+		
+		if player_choice in guessed_numbers:
+			print("You already tried that number!")
+			continue
+			
+		else:
+			guessed_numbers.append(player_choice)
+			
+			if int(player_choice) > number_to_guess:
+				print("Too high!")
+				lives_left -= 1
+				
+			elif int(player_choice) < number_to_guess:
+				print("Too low!")
+				lives_left -= 1
+				
+			elif int(player_choice) == number_to_guess:
+				print(f"Congratulations! You guessed the number "
+				      f"{number_to_guess} correctly!")
+				
+				print(f'Lives left: {lives_left} + 3 bonus lives = {lives_left + 3}')
+				lives_left += 3
+				print()
+				print(f"Next level: {level + 1} ")
+				break
+				
+			if lives_left == 0:
+				dead = True
+				break
+			print(f"You have {lives_left} lives left!")
+			
+	if dead:
+		print("You lose!")
+		break
